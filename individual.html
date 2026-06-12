@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Individual Analysis | Carbon Decode </title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="logo">
+        Carbon Decode
+    </div>
+    <ul class="nav-links">
+        <li> <a href="index.html"> Home </a> </li>
+        <li> <a href="individual.html"> Individual </a> </li>
+        <li> <a href="institution.html"> Institution </a> </li>
+        <li> <a href="awareness.html"> Awareness </a> </li>
+    </ul>
+</nav>
+
+<section class="individual-hero">
+    <div class="hero-content">
+        <h1> Measure Your Carbon Impact </h1>
+        <p>
+            Understand how your daily lifestyle choices affect the environment and discover smarter, sustainable habits for a greener future.
+        </p>
+    </div>
+</section>
+
+<section class="individual-form-section">
+    <form id="carbonForm">
+        <h2 class="form-title"> Evaluate Your Eco Impact </h2>
+        <input type="text" id="userName" placeholder="Enter Your Name" required>
+        <input type="number" id="transport" placeholder="Transport km per week" required>
+        <input type="number" id="electricity" placeholder="Monthly electricity usage" required>
+        <input type="number" id="flights" placeholder="Flights per year" required>
+        <select id="diet" required>
+            <option value="" disabled selected> Select Your Diet </option>
+            <option value="100"> Vegetarian </option>
+            <option value="300"> Mixed </option>
+            <option value="500"> Non-Vegetarian </option>
+        </select>
+        <div class="individual-button-group">
+            <button type="submit">
+                Calculate Footprint
+            </button>
+            <button type="reset" id="resetBtn" class="reset-btn">
+                Reset Calculator
+            </button>
+        </div>
+    </form>
+</section>
+    
+<section class="institution-loading" id="loadingSection">
+    <div class="loader"></div>
+    <p>Analyzing Sustainability Data...</p>
+</section>
+
+<section class="individual-result-section">
+    <h2>Your Carbon Analysis</h2>
+    <div class="individual-result-box">
+        <div class="individual-chart-card">
+            <canvas id="carbonChart"></canvas>
+        </div>
+        <div class="individual-result-card">
+            <h3>Total Emissions</h3>
+            <h1 id="emissionValue">0</h1>
+            <h3>Emission Level</h3>
+            <p id="emissionLevel">-</p>
+            <h3>Sustainability Score</h3>
+            <p id="score">-</p>
+        </div>
+    </div>
+</section>
+
+<section class="individual-insight-section">
+    <div class="individual-insight-card">
+        <h2>
+            AI Sustainability Insight
+        </h2>
+        <p id="individual-combinedInsight">
+            -
+        </p>
+    </div>
+</section>
+
+<section class="eco-score-section">
+    <h2>
+        Your Sustainability Score
+    </h2>
+    <div class="score-circle">
+        <div class="inner-circle">
+            <span id="ecoScore">
+                0
+            </span>
+            <p>
+                Eco Score
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="breakdown-section">
+    <h2>
+        Emission Breakdown
+    </h2>
+    <div class="breakdown-container">
+        <div class="breakdown-card">
+            <h3>
+                Transport Impact
+            </h3>
+            <p id="transportImpact">
+                -
+            </p>
+        </div>
+        <div class="breakdown-card">
+            <h3>
+                Electricity Usage
+            </h3>
+            <p id="electricityImpact">
+                -
+            </p>
+        </div>
+        <div class="breakdown-card">
+            <h3>
+                Flights Emissions
+            </h3>
+            <p id="flightImpact">
+                -
+            </p>
+        </div>
+        <div class="breakdown-card">
+            <h3>
+                Dietary Footprints
+            </h3>
+            <p id="dietImpact">
+                -
+            </p>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div>
+            <h2>Carbon Decode</h2>
+            <p>
+                Building environmental awareness through intelligent carbon footprint analysis and sustainable living insights.
+            </p>
+        </div>
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="individual.html">Individual</a>
+            <a href="institution.html">Institution</a>
+            <a href="awareness.html">Awareness</a>
+        </div>
+        <div>
+            <h3>Sustainability Vision</h3>
+            <p>
+                Inspiring greener choices for a cleaner and more responsible future.
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        © 2026 Carbon Decode • Designed for Environmental Awareness
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
