@@ -426,40 +426,45 @@ carbonForm.addEventListener("submit", function (e) {
         updateUIDisplay(record);
 
         // Save to database
-        fetch("/api/calculations/individual", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                userName,
-                transport: rawTransport,
-                flights: rawFlights,
-                electricity: rawElectricity,
-                diet: rawDiet,
-                recycle: rawRecycle,
-                water: rawWater,
-                plastic: rawPlastic,
-                clothes: rawClothes,
-                reusable: rawReusable,
-                foodWaste: rawFoodWaste,
-                acUsage: rawAcUsage,
-                energySaving: rawEnergySaving,
-                totalEmissions: total,
-                ecoScore
-            })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("Server responded with error status");
-            return res.json();
-        })
-        .then(data => {
-            console.log("DB Success:", data);
-            fetchHistory(); // refresh logs
-        })
-        .catch(err => {
-            console.warn("DB Save failed, falling back to LocalStorage:", err);
+        if (window.location.protocol === "file:") {
             saveToLocal("individual", record);
             fetchHistory();
-        });
+        } else {
+            fetch("/api/calculations/individual", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userName,
+                    transport: rawTransport,
+                    flights: rawFlights,
+                    electricity: rawElectricity,
+                    diet: rawDiet,
+                    recycle: rawRecycle,
+                    water: rawWater,
+                    plastic: rawPlastic,
+                    clothes: rawClothes,
+                    reusable: rawReusable,
+                    foodWaste: rawFoodWaste,
+                    acUsage: rawAcUsage,
+                    energySaving: rawEnergySaving,
+                    totalEmissions: total,
+                    ecoScore
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Server responded with error status");
+                return res.json();
+            })
+            .then(data => {
+                console.log("DB Success:", data);
+                fetchHistory(); // refresh logs
+            })
+            .catch(err => {
+                console.warn("DB Save failed, falling back to LocalStorage:", err);
+                saveToLocal("individual", record);
+                fetchHistory();
+            });
+        }
 
         // Scroll to results section
 
@@ -559,6 +564,14 @@ function updateStatusBadge(isConnected) {
 function fetchHistory() {
     const tableBody = document.getElementById("historyTableBody");
     if (!tableBody) return;
+
+    if (window.location.protocol === "file:") {
+        updateStatusBadge(false);
+        const localData = getFromLocal("individual");
+        window.lastFetchedHistory = localData;
+        renderHistoryRows(localData);
+        return;
+    }
 
     fetch("/api/calculations/individual")
         .then(res => {

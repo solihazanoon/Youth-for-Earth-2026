@@ -34,6 +34,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Check connection and load data
     function checkServerConnection() {
+        if (window.location.protocol === "file:") {
+            isOffline = true;
+            dbStatusEl.textContent = "Local Storage (Offline)";
+            dbStatusEl.className = "db-status-badge offline";
+            loadAllDataFromLocalStorage();
+            return;
+        }
+
         fetch("/api/admin/calculations/individual")
             .then(res => {
                 if (!res.ok) throw new Error("Server response not ok");

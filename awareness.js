@@ -42,6 +42,12 @@ function updatePledgeCountDisplay(count) {
 }
 
 function fetchPledgeCount() {
+    if (window.location.protocol === "file:") {
+        const localCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "0");
+        updatePledgeCountDisplay(localCount);
+        return;
+    }
+
     fetch("/api/pledges/count")
         .then(res => {
             if (!res.ok) throw new Error();
@@ -79,6 +85,13 @@ if (pledgeBtn) {
         pledgeBtn.style.cursor = "default";
         
         localStorage.setItem("greenPledgeTaken", "true");
+
+        if (window.location.protocol === "file:") {
+            const localCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "0") + 1;
+            localStorage.setItem("carbon_decode_local_pledges_count", String(localCount));
+            updatePledgeCountDisplay(localCount);
+            return;
+        }
 
         fetch("/api/pledges", {
             method: "POST",

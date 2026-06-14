@@ -280,33 +280,38 @@ institutionForm.addEventListener("submit", function (e) {
             created_at: new Date().toISOString()
         };
 
-        fetch("/api/calculations/institution", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                institutionName,
-                email,
-                employees,
-                students,
-                electricityUsage: electricity,
-                transportFleet,
-                wasteGenerated,
-                totalEmissions: total
-            })
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("Server responded with error status");
-            return res.json();
-        })
-        .then(data => {
-            console.log("Institution DB Success:", data);
-            fetchHistory(); // refresh logs
-        })
-        .catch(err => {
-            console.warn("Institution DB Save failed, falling back to LocalStorage:", err);
+        if (window.location.protocol === "file:") {
             saveToLocal("institution", record);
             fetchHistory();
-        });
+        } else {
+            fetch("/api/calculations/institution", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    institutionName,
+                    email,
+                    employees,
+                    students,
+                    electricityUsage: electricity,
+                    transportFleet,
+                    wasteGenerated,
+                    totalEmissions: total
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Server responded with error status");
+                return res.json();
+            })
+            .then(data => {
+                console.log("Institution DB Success:", data);
+                fetchHistory(); // refresh logs
+            })
+            .catch(err => {
+                console.warn("Institution DB Save failed, falling back to LocalStorage:", err);
+                saveToLocal("institution", record);
+                fetchHistory();
+            });
+        }
 
         // Scroll to results section
         document.getElementById("chartSection")
@@ -356,6 +361,13 @@ function updateStatusBadge(isConnected) {
 function fetchHistory() {
     const tableBody = document.getElementById("historyTableBody");
     if (!tableBody) return;
+
+    if (window.location.protocol === "file:") {
+        updateStatusBadge(false);
+        const localData = getFromLocal("institution");
+        renderHistoryRows(localData);
+        return;
+    }
 
     fetch("/api/calculations/institution")
         .then(res => {
