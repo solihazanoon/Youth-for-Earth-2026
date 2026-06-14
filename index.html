@@ -3,103 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carbon Decode</title>
+    <title>Carbon Decode | Environmental Action & Carbon Footprint Analysis</title>
+    <meta name="description" content="Decode the environmental impact of your daily choices. Carbon Decode provides smart calculators and awareness resources for individuals and institutions to track emissions and make sustainable choices.">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <nav>
     <div class="logo-section">
-    <h2>Carbon Decode</h2>
-    <p>
-        Decoding the Carbon Behind Your Choices
-    </p>
+        <h2>Carbon Decode</h2>
+        <p>Decoding the Carbon Behind Your Choices</p>
     </div>
     <ul>
         <li><a href="index.html">Home</a></li>
         <li><a href="individual.html">Individual</a></li>
-        <li><a href="institution.html">Institution</a></li>
+        <li><a href="organization.html">Organization</a></li>
         <li><a href="awareness.html">Awareness</a></li>
+        <li><a href="about.html">About</a></li>
     </ul>
 </nav>
 
 <section class="hero">
-
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <p class="hero-small">
-            Climate Awareness Platform
-        </p>
-        <h1>
-            The Planet Is Changing.
-            Our Choices Decide How.
-        </h1>
+        <p class="hero-small">Climate Awareness Platform</p>
+        <h1>The Planet Is Changing.<br>Our Choices Decide How.</h1>
         <p class="hero-text">
-            Explore the hidden environmental impact
-            behind everyday actions
-            and take a step toward
-            a more sustainable future.
+            Explore the hidden environmental impact behind everyday actions and take a step toward a more sustainable, eco-friendly future.
         </p>
         <div class="hero-buttons">
-            <a href="individual.html" class="btn"> Individual Analysis </a>
-            <a href="institution.html" class="btn secondary-btn"> Institution Analysis </a>
+            <a href="individual.html" class="btn" id="heroBtnIndividual">Individual Analysis</a>
+            <a href="organization.html" class="btn secondary-btn" id="heroBtnInstitution">Organization Analysis</a>
         </div>
     </div>
 </section>
 
-<section class="features">
-    <h2>Our Features</h2>
-    <div class="feature-container">
-        <div class="feature-card">
-            <h3>👤 Individual Calculator</h3>
-            <p>
-                Analyze personal lifestyle emissions
-                and environmental impact.
-            </p>
-        </div>
-        <div class="feature-card">
-            <h3>🏫 Institution Analysis</h3>
-            <p>
-                Track emissions for schools,
-                colleges, and universities.
-            </p>
-        </div>
-        <div class="feature-card">
-            <h3>📊 Smart Charts</h3>
-            <p>
-                Understand carbon data
-                through interactive visualizations.
-            </p>
-        </div>
-    </div>
-</section>
+
 <section class="stats">
-    <div class="stat-card">
-        <h2>36B+</h2>
-        <p>Tons of CO₂ Emitted Globally</p>
+    <div class="stat-card" style="min-width: 320px;">
+        <h2 id="globalCarbonClock" style="font-family: monospace; font-size: 2.5rem; letter-spacing: -0.5px;">-</h2>
+        <p>Tons of CO₂ Emitted Globally This Year</p>
     </div>
-    <div class="stat-card">
-        <h2>1T+</h2>
-        <p>Trees Needed For Balance</p>
+    <div class="stat-card" style="min-width: 320px;">
+        <h2 id="co2Concentration" style="font-family: monospace; font-size: 2.5rem; letter-spacing: -0.5px;">427.150000 ppm</h2>
+        <p>Atmospheric CO₂ Level (Live Est.)</p>
     </div>
-    <div class="stat-card">
-        <h2>30%</h2>
-        <p>Energy Wasted Every Year</p>
+    <div class="stat-card" style="min-width: 320px;">
+        <h2 id="climateCountdown" style="font-family: monospace; font-size: 1.8rem; font-weight: 800; color: #c62828;">-</h2>
+        <p>Time Left to Limit Warming to 1.5°C</p>
     </div>
 </section>
 
-<section class="about">
-    <h2>Why Carbon Tracking Matters</h2>
-    <p>
+<!-- Global Carbon Footprint Section (New World Split Layout) -->
+<section class="world-section">
+    <div class="world-container">
+        <div class="world-content">
+            <h2>🌍 The Global Carbon Footprint</h2>
+            <p>
+                Densely populated urban centers, heavy industrial corridors, and fossil-fueled power grids account for the vast majority of our planet's carbon dioxide emissions. Transitioning to renewable grids and zero-emission infrastructure is essential to cooling these hotspots.
+            </p>
+            <div class="world-news-card">
+                <div class="news-header">
+                    <span class="live-indicator">● LIVE ESTIMATES</span>
+                    <span id="worldTime" class="news-time">Loading...</span>
+                </div>
+                <p id="worldFactText" class="news-text">Industrial operations and energy production represent over 70% of global greenhouse emissions.</p>
+            </div>
+        </div>
+        <div class="world-image-card">
+            <img src="Hennig_HighRes-scaled.jpg" alt="Global Carbon Emissions Heat Map illustration">
+            <div class="image-caption">
+                <strong>Global Emissions Hotspots</strong>
+                <span>Densely populated zones and heavy industrial areas emit the vast majority of carbon emissions.</span>
+            </div>
+        </div>
+    </div>
+</section>
 
-        Carbon emissions contribute significantly
-        to climate change and environmental degradation.
-
-        Carbon Decode helps individuals and institutions
-        understand their environmental impact
-        and make sustainable decisions
-        for a greener future.
-    </p>
+<!-- J&K Ecological Pulse Section (Split Layout) -->
+<section class="kashmir-section">
+    <div class="kashmir-container">
+        <div class="kashmir-content">
+            <h2>🏔️ J&K's Ecological Pulse</h2>
+            <p>
+                Jammu and Kashmir is home to some of the world's most delicate mountain ecosystems, wetlands, and glaciers. Climate change is triggering accelerated glacier retreat, shifting precipitation patterns, and rising environmental challenges in iconic wetlands like Dal Lake.
+            </p>
+            <div class="kashmir-news-card">
+                <div class="news-header">
+                    <span class="live-indicator">● LIVE UPDATES</span>
+                    <span id="newsTime" class="news-time">Loading...</span>
+                </div>
+                <p id="newsText" class="news-text">Gathering regional environmental developments...</p>
+            </div>
+        </div>
+        <div class="kashmir-image-card">
+            <img src="Dal%20Lake%2CSrinagar.jpg" alt="Beautiful Dal Lake in Srinagar, Kashmir, illustrating vital wetland ecosystems.">
+            <div class="image-caption">
+                <strong>Dal Lake, Srinagar</strong>
+                <span>A key wetland ecosystem undergoing major conservation and sewage treatment cleanup drives.</span>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section class="future-impact">
@@ -108,153 +113,96 @@
         <div class="impact-card">
             <h3>🌡 Rising Temperatures</h3>
             <p>
-                Global temperatures may rise
-                by 2°C–3°C this century.
+                Global temperatures may rise by 2°C–3°C this century if greenhouse gas emissions continue unchecked.
             </p>
         </div>
         <div class="impact-card">
             <h3>🧊 Glacier Melting</h3>
             <p>
-                Ice caps are melting rapidly,
-                increasing sea levels globally.
+                Polar ice caps are melting at record rates, causing ocean levels to rise and threatening coastal cities.
             </p>
         </div>
         <div class="impact-card">
             <h3>🌊 Ocean Changes</h3>
             <p>
-                Climate change affects
-                marine ecosystems and biodiversity.
+                Ocean warming and acidification disrupt marine ecosystems, collapse coral reefs, and threaten global food security.
             </p>
         </div>
     </div>
 </section>
 
-<section class="vision-purpose">
-    <h2> Our Vision & Purpose </h2>
-    <p>
-        We live in a world where every choice
-        leaves an environmental impact,
-        yet many people remain unaware
-        of the carbon hidden behind
-        everyday activities.
-
-        Carbon Decode was created
-        to transform invisible impact
-        into visible awareness.
-
-        Our vision is to encourage individuals,
-        schools, colleges, and institutions
-        to understand their carbon footprint,
-        adopt sustainable thinking,
-        and contribute toward
-        a cleaner and greener future.
-
-        Because meaningful change begins
-        when awareness becomes action.
-    </p>
-</section>
-
 <section class="timeline-section">
-    <h2> Journey Toward a Sustainable Future </h2>
+    <h2>Real-World Climate Action Highlights</h2>
     <div class="timeline">
         <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-                <h3>Awareness</h3>
+                <h3>🌳 Africa's Great Green Wall</h3>
                 <p>
-
-                    Understanding how everyday actions
-                    contribute to carbon emissions.
+                    An epic initiative growing an 8,000km natural wonder across the width of Africa, combating desertification, restoring 100 million hectares of degraded lands, and creating thousands of green jobs.
                 </p>
             </div>
         </div>
         <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-                <h3>Analysis</h3>
+                <h3>⚡ Global Renewable Surge</h3>
                 <p>
-                    Measuring carbon footprints
-                    through smart environmental calculations.
+                    Solar and wind energy installations have officially surpassed fossil fuels in new power capacity additions worldwide, with solar drop-prices making it the cheapest utility in electricity history.
                 </p>
             </div>
         </div>
         <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-                <h3>Sustainable Choices</h3>
+                <h3>🇨🇷 Costa Rica's Forest Rebound</h3>
                 <p>
-                    Encouraging greener habits,
-                    reduced emissions,
-                    and environmental responsibility.
+                    Through policy reforms and smart eco-taxation incentives, Costa Rica successfully doubled its tropical rainforest cover in the last three decades, going from 26% coverage to over 52% today.
                 </p>
             </div>
         </div>
         <div class="timeline-item">
             <div class="timeline-dot"></div>
             <div class="timeline-content">
-                <h3>Climate Action</h3>
+                <h3>🇪🇺 The European Green Deal</h3>
                 <p>
-                    Creating collective impact
-                    toward a cleaner and healthier planet.
+                    A legally-binding regional framework mapping Europe's complete transition to a climate-neutral continent by 2050, triggering billions in clean tech investments and grid transitions.
                 </p>
             </div>
         </div>
     </div>
-
-</section>
-<section class="map-section">
-    <h2> Global Carbon Emission Zones </h2>
-    <img src="Hennig_HighRes-scaled.jpg" alt="Global Carbon Emissions">
-    <p class="map-text">
-        Countries with higher industrial activity,
-        fossil fuel consumption,
-        and transportation emissions
-        contribute significantly more
-        to global carbon emissions.
-    </p>
 </section>
 
-<section class="cta">
-    <div class="cta-overlay">
-        <h2>
-            The Future of Our Planet
-            Depends on the Choices We Make Today
-        </h2>
-        <p>
 
-            Small actions,
-        when multiplied by millions of people,
-        can transform the future of our planet.
-        </p>
-    </div>
-</section>
 
 <footer class="footer">
     <div class="footer-container">
         <div>
             <h2>Carbon Decode</h2>
             <p>
-                Building environmental awareness through intelligent carbon footprint analysis and sustainable living insights.
+                Building climate action through quantitative carbon footprinting, sustainability education, and community tools.
             </p>
         </div>
         <div>
             <h3>Quick Links</h3>
-            <a href="index.html">Home</a>
-            <a href="individual.html">Individual</a>
-            <a href="institution.html">Institution</a>
-            <a href="awareness.html">Awareness</a>
+            <a href="index.html" id="footerLinkHome">Home</a>
+            <a href="individual.html" id="footerLinkIndividual">Individual</a>
+            <a href="organization.html" id="footerLinkInstitution">Organization</a>
+            <a href="awareness.html" id="footerLinkAwareness">Awareness</a>
+            <a href="about.html" id="footerLinkAbout">About</a>
         </div>
         <div>
             <h3>Sustainability Vision</h3>
             <p>
-                Inspiring greener choices for a cleaner and more responsible future.
+                Inspiring low-impact choices, electric transit networks, and zero-waste initiatives for a cleaner, greener earth.
             </p>
         </div>
     </div>
     <div class="footer-bottom">
-        © 2026 Carbon Decode • Designed for Environmental Awareness
+        &copy; 2026 Carbon Decode • Designed for Environmental Awareness
     </div>
 </footer>
 
+<script src="home.js"></script>
 </body>
 </html>

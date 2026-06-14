@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+# Local database file
+carbon_decode.db
+
+# User specific configuration
+.gemini/
+.env

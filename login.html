@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Carbon Decode</title>
+    <meta name="description" content="Secure administrative login for Carbon Decode database and systems management.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+    <div class="logo-section">
+        <h2>Carbon Decode</h2>
+        <p>Decoding the Carbon Behind Your Choices</p>
+    </div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="individual.html">Individual</a></li>
+        <li><a href="organization.html">Organization</a></li>
+        <li><a href="awareness.html">Awareness</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+</nav>
+
+<section class="admin-hero" style="min-height: 25vh;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Admin Authentication</h1>
+        <p>Please enter credentials to access database and audit records.</p>
+    </div>
+</section>
+
+<!-- Login Form Section -->
+<section style="padding: 60px 5%; display: flex; justify-content: center; align-items: center; background: var(--bg-light); min-height: 45vh;">
+    <div class="login-card" style="background: var(--white); padding: 40px; border-radius: var(--border-radius-lg); box-shadow: var(--shadow-md); border: 1px solid rgba(11, 37, 22, 0.05); width: 100%; max-width: 420px; text-align: left;">
+        <h3 style="margin-bottom: 25px; color: var(--primary); text-align: center;">Sign In to Console</h3>
+        <form id="loginForm">
+            <div style="margin-bottom: 20px;">
+                <label for="username" style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--primary);">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required style="width: 100%; padding: 12px 16px; border: 1.5px solid rgba(11, 37, 22, 0.1); border-radius: 8px; outline: none; font-size: 14px;">
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label for="password" style="display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--primary);">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required style="width: 100%; padding: 12px 16px; border: 1.5px solid rgba(11, 37, 22, 0.1); border-radius: 8px; outline: none; font-size: 14px;">
+            </div>
+            
+            <p id="loginError" style="margin: -10px 0 15px; font-size: 13px; text-align: center; height: 18px;"></p>
+            
+            <button type="submit" class="btn" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 700;">Login to Dashboard</button>
+        </form>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div>
+            <h2>Carbon Decode</h2>
+            <p>
+                Building climate action through quantitative carbon footprinting, sustainability education, and community tools.
+            </p>
+        </div>
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html" id="footerLinkHome">Home</a>
+            <a href="individual.html" id="footerLinkIndividual">Individual</a>
+            <a href="organization.html" id="footerLinkInstitution">Organization</a>
+            <a href="awareness.html" id="footerLinkAwareness">Awareness</a>
+            <a href="about.html" id="footerLinkAbout">About</a>
+        </div>
+        <div>
+            <h3>Sustainability Vision</h3>
+            <p>
+                Inspiring low-impact choices, electric transit networks, and zero-waste initiatives for a cleaner, greener earth.
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Carbon Decode • Designed for Environmental Awareness
+    </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if already logged in, redirect directly to admin
+    if (sessionStorage.getItem("adminLoggedIn") === "true") {
+        window.location.href = "admin.html";
+        return;
+    }
+
+    const loginForm = document.getElementById("loginForm");
+    const loginError = document.getElementById("loginError");
+    
+    loginForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const u = document.getElementById("username").value;
+        const p = document.getElementById("password").value;
+        
+        if (u === "admin" && p === "admin@123") {
+            sessionStorage.setItem("adminLoggedIn", "true");
+            window.location.href = "admin.html";
+        } else {
+            loginError.textContent = "❌ Invalid username or password.";
+            loginError.style.color = "#c62828";
+        }
+    });
+});
+</script>
+</body>
+</html>

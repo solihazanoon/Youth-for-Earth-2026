@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizational Carbon Intelligence | Carbon Decode</title>
+    <meta name="description" content="Evaluate the environmental footprint of your school, college, business, or corporate office. Analyze utility usage, operations, waste levels, and employee transit to build an organizational roadmap to sustainability.">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+    <div class="logo-section">
+        <h2>Carbon Decode</h2>
+        <p>Decoding the Carbon Behind Your Choices</p>
+    </div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="individual.html">Individual</a></li>
+        <li><a href="organization.html">Organization</a></li>
+        <li><a href="awareness.html">Awareness</a></li>
+        <li><a href="about.html">About</a></li>
+    </ul>
+</nav>
+
+<section class="institution-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Organizational Carbon Intelligence</h1>
+        <p>
+            Analyze operational emissions, evaluate sustainability performance, and map out a pathway to a greener corporate, enterprise, or academic future.
+        </p>
+    </div>
+</section>
+
+<section class="institution-form-section">
+    <form id="institutionForm">
+        <h2 class="form-title">Evaluate Your Organization / Company</h2>
+        
+        <label for="orgType">Organization Type</label>
+        <select id="orgType" required style="width: 100%; padding: 15px; font-size: 16px; border-radius: 12px; border: 1px solid rgba(11,37,22,0.15); margin-top: 5px; margin-bottom: 25px; outline: none; background: var(--white); box-sizing: border-box; cursor: pointer;">
+            <option value="" disabled selected>Select Organization Type</option>
+            <option value="company">Private Company / Corporate Office</option>
+            <option value="institution">Educational / Public Institution</option>
+        </select>
+
+        <label for="userName">Organization Name</label>
+        <input type="text" id="userName" placeholder="Enter Organization Name" required>
+        
+        <label for="userEmail">Contact Email Address</label>
+        <input type="email" id="userEmail" placeholder="Enter Contact Email" required>
+        
+        <label for="employees">Number of Employees</label>
+        <input type="number" id="employees" placeholder="Number of Employees" required>
+        
+        <label for="students" style="display: none;">Number of Students / Members</label>
+        <input type="number" id="students" placeholder="Number of Students" style="display: none;">
+        
+        <label for="electricityUsage">Monthly Electricity Usage (kWh)</label>
+        <input type="number" id="electricityUsage" placeholder="Monthly Electricity Usage (kWh)" required>
+        
+        <label for="transportFleet">Monthly Transport Fleet Mileage or Fuel (liters/km)</label>
+        <input type="number" id="transportFleet" placeholder="Transport Fleet Usage" required>
+        
+        <label for="wasteGenerated">Monthly Waste Generated (kg)</label>
+        <input type="number" id="wasteGenerated" placeholder="Waste Generated (kg)" required>
+        
+        <div class="institution-button-group">
+            <button type="submit">Analyze Operational Impact</button>
+            <button type="reset" class="reset-btn">Reset Fields</button>
+        </div>
+    </form>
+</section>
+
+<section class="institution-loading" id="loadingSection">
+    <div class="loader"></div>
+    <p>Analyzing Sustainability Data...</p>
+</section>
+
+<section class="institution-result-section" id="chartSection">
+    <h2>Organization Emission Analysis</h2>
+    <div class="institution-result-box">
+        <div class="institution-chart-card">
+            <canvas id="institutionChart"></canvas>
+        </div>
+        <div class="institution-result-card" style="display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+            <div>
+                <h3>Total Carbon Emission</h3>
+                <h1 id="institutionEmission" style="margin-bottom: 5px;">0 kg CO₂</h1>
+            </div>
+            <div id="offsetCard" style="border-top: 1px solid rgba(11, 37, 22, 0.08); padding-top: 15px; margin-top: 10px; display: none;">
+                <h4 style="font-size: 1.1rem; color: var(--accent); font-weight: 700; margin-bottom: 5px;">🌲 Offset Requirement</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.4;"><strong id="treesNeeded" style="color: var(--primary); font-size: 1.2rem;">0</strong> mature trees needed to plant annually to absorb these emissions.</p>
+            </div>
+            <button type="button" id="printReportBtn" style="margin-top: 10px; padding: 12px; font-size: 0.9rem; font-weight: bold; border-radius: var(--border-radius-sm); border: 1.5px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; transition: var(--transition);">
+                🖨️ Print / Save PDF Report
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="insight-section">
+    <div class="insight-card">
+        <h2>AI Sustainability Insights</h2>
+        <p id="combinedInsight">-</p>
+    </div>
+</section>
+
+
+<section class="insight-section" id="historySection" style="background: var(--bg-light); border-top: 1px solid rgba(11, 37, 22, 0.05); margin-top: 50px;">
+    <div class="insight-card" style="max-width: 1100px;">
+        <h2>Recent Audits History <span id="dbStatusBadge" class="status-badge offline">Offline</span></h2>
+        <div style="overflow-x: auto; margin-top: 20px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgba(11,37,22,0.05);">
+                <thead>
+                    <tr style="background: var(--primary); color: var(--white); font-family: var(--font-heading); font-weight: 700;">
+                        <th style="padding: 15px 20px;">Institution Name</th>
+                        <th style="padding: 15px 20px;">Total Emissions</th>
+                        <th style="padding: 15px 20px;">Date Audited</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <tr>
+                        <td colspan="3" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading audit logs from database...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div>
+            <h2>Carbon Decode</h2>
+            <p>
+                Building climate action through quantitative carbon footprinting, sustainability education, and community tools.
+            </p>
+        </div>
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html" id="footerLinkHome">Home</a>
+            <a href="individual.html" id="footerLinkIndividual">Individual</a>
+            <a href="organization.html" id="footerLinkInstitution">Organization</a>
+            <a href="awareness.html" id="footerLinkAwareness">Awareness</a>
+            <a href="about.html" id="footerLinkAbout">About</a>
+        </div>
+        <div>
+            <h3>Sustainability Vision</h3>
+            <p>
+                Inspiring low-impact choices, electric transit networks, and zero-waste initiatives for a cleaner, greener earth.
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Carbon Decode • Designed for Environmental Awareness
+    </div>
+</footer>
+
+<script src="organization.js"></script>
+</body>
+</html>

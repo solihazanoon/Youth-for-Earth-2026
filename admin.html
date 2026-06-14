@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Console | Carbon Decode</title>
+    <meta name="description" content="Administrative dashboard for Carbon Decode to track, evaluate, and manage carbon footprint assessments and climate audits.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        if (sessionStorage.getItem("adminLoggedIn") !== "true") {
+            window.location.replace("login.html");
+        }
+    </script>
+    <style>
+        #logoutBtn {
+            color: var(--accent-light) !important;
+            font-weight: 700;
+            border: 1.5px solid var(--accent-light);
+            padding: 6px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        #logoutBtn:hover {
+            background: var(--accent-light);
+            color: var(--primary) !important;
+        }
+        #logoutBtn::after {
+            display: none !important;
+        }
+        .admin-tab-container .secondary-btn {
+            background: transparent;
+            color: var(--text-muted) !important;
+            border: 1.5px solid rgba(11, 37, 22, 0.15) !important;
+            box-shadow: none;
+        }
+        .admin-tab-container .secondary-btn:hover {
+            background: rgba(46, 125, 92, 0.05);
+            color: var(--primary) !important;
+            border-color: var(--accent) !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo-section">
+        <h2>Carbon Decode</h2>
+        <p>Decoding the Carbon Behind Your Choices</p>
+    </div>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="individual.html">Individual</a></li>
+        <li><a href="organization.html">Organization</a></li>
+        <li><a href="awareness.html">Awareness</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="#" id="logoutBtn">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="admin-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Admin Console</h1>
+        <p>
+            Monitor live user carbon calculations, evaluate regional aggregates, and manage system audit logs.
+        </p>
+    </div>
+</section>
+
+<!-- Connection Status Badge -->
+<section class="status-indicator-section" style="padding: 20px 5%; text-align: right; background: var(--bg-light); border-bottom: 1px solid rgba(11, 37, 22, 0.05);">
+    <div style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px;">
+        <span>Server Connection Status:</span>
+        <span id="adminDbStatus" class="db-status-badge offline">Checking...</span>
+    </div>
+</section>
+
+<!-- Main Dashboard KPIs -->
+<section class="stats" style="background: var(--bg-light); padding-top: 40px; padding-bottom: 40px;">
+    <div class="stat-card" style="min-width: 220px;">
+        <h2 id="kpiTotalUsers" style="font-family: monospace; font-size: 2.2rem; color: var(--primary);">-</h2>
+        <p>Total User Footprints</p>
+    </div>
+    <div class="stat-card" style="min-width: 220px;">
+        <h2 id="kpiAvgIndividual" style="font-family: monospace; font-size: 2.2rem; color: var(--primary);">-</h2>
+        <p>Avg User Footprint (kg CO₂)</p>
+    </div>
+    <div class="stat-card" style="min-width: 220px;">
+        <h2 id="kpiTotalInst" style="font-family: monospace; font-size: 2.2rem; color: var(--primary);">-</h2>
+        <p>Total Org Audits</p>
+    </div>
+    <div class="stat-card" style="min-width: 220px;">
+        <h2 id="kpiAvgInst" style="font-family: monospace; font-size: 2.2rem; color: var(--primary);">-</h2>
+        <p>Avg Org Footprint (Tons CO₂)</p>
+    </div>
+    <div class="stat-card" style="min-width: 220px;">
+        <h2 id="kpiTotalPledges" style="font-family: monospace; font-size: 2.2rem; color: var(--primary);">-</h2>
+        <p>Total Green Pledges</p>
+    </div>
+</section>
+
+<!-- Admin Management Panel -->
+<section class="admin-panel-section" style="padding: 50px 5%; background: var(--white);">
+    <div class="admin-tab-container" style="display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid rgba(11, 37, 22, 0.08); padding-bottom: 15px; flex-wrap: wrap;">
+        <button id="tabIndividual" class="btn" style="border-radius: 30px; font-size: 15px; padding: 12px 24px;">👤 Individual Calculations</button>
+        <button id="tabInstitution" class="btn secondary-btn" style="border-radius: 30px; font-size: 15px; padding: 12px 24px;">🏢 Organizational Audits</button>
+    </div>
+
+    <!-- Search Section -->
+    <div class="admin-filter-bar" style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; align-items: center;">
+        <input type="text" id="adminSearchInput" placeholder="Search by name..." style="flex: 1; min-width: 250px; padding: 14px 20px; border: 1.5px solid rgba(11, 37, 22, 0.1); border-radius: 12px; outline: none; font-size: 14px;">
+        <button id="clearSearchBtn" class="btn secondary-btn" style="margin: 0; padding: 14px 20px; border-radius: 12px; font-size: 14px;">Clear Search</button>
+    </div>
+
+    <!-- Individual Table -->
+    <div id="individualContainer" class="table-wrapper">
+        <h3 style="margin-bottom: 15px; color: var(--primary);">Individual Assessments Database</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User Name</th>
+                    <th>Eco Score</th>
+                    <th>Total Emissions</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="individualTableBody">
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">Loading individual records...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Institution Table -->
+    <div id="institutionContainer" class="table-wrapper" style="display: none;">
+        <h3 style="margin-bottom: 15px; color: var(--primary);">Organizational Audits Database</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Organization Name</th>
+                    <th>Size (Staff/Students)</th>
+                    <th>Total Emissions</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="institutionTableBody">
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 30px;">Loading organizational records...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Detail View Modal -->
+<div id="adminModal" class="admin-modal" style="display: none;">
+    <div class="admin-modal-content">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(11, 37, 22, 0.08); padding-bottom: 15px; margin-bottom: 20px;">
+            <h3 id="modalTitle" style="margin: 0; color: var(--primary);">Record Details</h3>
+            <span class="close-modal" id="closeAdminModal" style="cursor: pointer; font-size: 24px; font-weight: 700; color: var(--text-muted);">&times;</span>
+        </div>
+        <div id="modalBody" class="modal-body">
+            <!-- Modal Content Dynamically Generated -->
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div>
+            <h2>Carbon Decode</h2>
+            <p>
+                Building climate action through quantitative carbon footprinting, sustainability education, and community tools.
+            </p>
+        </div>
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html" id="footerLinkHome">Home</a>
+            <a href="individual.html" id="footerLinkIndividual">Individual</a>
+            <a href="organization.html" id="footerLinkInstitution">Organization</a>
+            <a href="awareness.html" id="footerLinkAwareness">Awareness</a>
+            <a href="about.html" id="footerLinkAbout">About</a>
+        </div>
+        <div>
+            <h3>Sustainability Vision</h3>
+            <p>
+                Inspiring low-impact choices, electric transit networks, and zero-waste initiatives for a cleaner, greener earth.
+            </p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Carbon Decode • Designed for Environmental Awareness
+    </div>
+</footer>
+
+<script src="admin.js"></script>
+</body>
+</html>

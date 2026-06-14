@@ -3,53 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Individual Analysis | Carbon Decode </title>
+    <title>Individual Carbon Analysis | Carbon Decode</title>
+    <meta name="description" content="Assess your personal carbon footprint. Enter details about your travel habits, home energy use, food choices, and waste recycling to get a detailed ecological analysis and custom AI insights.">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-
 <body>
-<nav class="navbar">
-    <div class="logo">
-        Carbon Decode
+
+<nav>
+    <div class="logo-section">
+        <h2>Carbon Decode</h2>
+        <p>Decoding the Carbon Behind Your Choices</p>
     </div>
-    <ul class="nav-links">
-        <li> <a href="index.html"> Home </a> </li>
-        <li> <a href="individual.html"> Individual </a> </li>
-        <li> <a href="institution.html"> Institution </a> </li>
-        <li> <a href="awareness.html"> Awareness </a> </li>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="individual.html">Individual</a></li>
+        <li><a href="organization.html">Organization</a></li>
+        <li><a href="awareness.html">Awareness</a></li>
+        <li><a href="about.html">About</a></li>
     </ul>
 </nav>
 
 <section class="individual-hero">
+    <div class="hero-overlay"></div>
     <div class="hero-content">
-        <h1> Measure Your Carbon Impact </h1>
+        <h1>Measure Your Carbon Impact</h1>
         <p>
-            Understand how your daily lifestyle choices affect the environment and discover smarter, sustainable habits for a greener future.
+            Understand how your daily lifestyle choices shape the environment. Run our assessment to discover practical habits for a sustainable lifestyle.
         </p>
     </div>
 </section>
 
 <section class="individual-form-section">
     <form id="carbonForm">
-        <h2 class="form-title"> Evaluate Your Eco Impact </h2>
-        <input type="text" id="userName" placeholder="Enter Your Name" required>
-        <input type="number" id="transport" placeholder="Transport km per week" required>
-        <input type="number" id="electricity" placeholder="Monthly electricity usage" required>
-        <input type="number" id="flights" placeholder="Flights per year" required>
-        <select id="diet" required>
-            <option value="" disabled selected> Select Your Diet </option>
-            <option value="100"> Vegetarian </option>
-            <option value="300"> Mixed </option>
-            <option value="500"> Non-Vegetarian </option>
-        </select>
-        <div class="individual-button-group">
-            <button type="submit">
-                Calculate Footprint
-            </button>
-            <button type="reset" id="resetBtn" class="reset-btn">
-                Reset Calculator
-            </button>
+        <h2 class="form-title" style="margin-bottom: 15px;">Sustainability Lifestyle Quiz</h2>
+
+        <!-- Quiz Progress Bar -->
+        <div class="quiz-progress-container" style="width: 100%; height: 8px; background: rgba(11, 37, 22, 0.08); border-radius: 4px; margin-bottom: 30px; overflow: hidden;">
+            <div id="quizProgressBar" style="width: 14%; height: 100%; background: var(--accent); transition: width 0.3s ease;"></div>
+        </div>
+
+        <!-- Quiz Step Container -->
+        <div id="quizStepContainer">
+            <!-- Step 1: User Name -->
+            <div class="quiz-step active" data-step="1">
+                <label for="userName" style="font-size: 1.1rem; font-weight: 600; color: var(--primary); display: block; margin-bottom: 10px;">Let's start with your name</label>
+                <input type="text" id="userName" placeholder="Enter Your Name" required style="width: 100%; padding: 15px; font-size: 16px; border-radius: 12px; border: 1px solid rgba(11,37,22,0.15); margin-top: 5px; margin-bottom: 25px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='rgba(11,37,22,0.15)'">
+                <div style="text-align: right;">
+                    <button type="button" class="btn" id="quizStartBtn" style="padding: 12px 28px;">Start Quiz &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Transportation -->
+            <div class="quiz-step" data-step="2" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--primary); font-family: var(--font-heading); font-size: 1.25rem;">1. How do you primarily travel for daily commuting?</h3>
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" data-field="transport" data-value="300">
+                        <div class="option-icon">🚗</div>
+                        <h4>Personal Car</h4>
+                        <p>High emission fuel commuting</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="transport" data-value="200">
+                        <div class="option-icon">🛵</div>
+                        <h4>Bike / Scooter</h4>
+                        <p>Moderate emission two-wheeler</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="transport" data-value="100">
+                        <div class="option-icon">🚌</div>
+                        <h4>Public Transport</h4>
+                        <p>Low carbon transit share</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="transport" data-value="30">
+                        <div class="option-icon">🚶</div>
+                        <h4>Walk / Cycle</h4>
+                        <p>Zero carbon active travel</p>
+                    </div>
+                </div>
+                <div class="quiz-nav-buttons">
+                    <button type="button" class="btn secondary-btn prev-step-btn">&larr; Back</button>
+                    <button type="button" class="btn next-step-btn" disabled>Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Flights -->
+            <div class="quiz-step" data-step="3" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--primary); font-family: var(--font-heading); font-size: 1.25rem;">2. How many flights do you take in a typical year?</h3>
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" data-field="flights" data-value="0">
+                        <div class="option-icon">✈️❌</div>
+                        <h4>None</h4>
+                        <p>I do not travel by air</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="flights" data-value="150">
+                        <div class="option-icon">✈️</div>
+                        <h4>1 - 2 Flights</h4>
+                        <p>Short regional or occasional trips</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="flights" data-value="350">
+                        <div class="option-icon">✈️✈️</div>
+                        <h4>3 - 5 Flights</h4>
+                        <p>Moderate long-distance travel</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="flights" data-value="600">
+                        <div class="option-icon">🚀</div>
+                        <h4>More than 5 Flights</h4>
+                        <p>Frequent air travel impacts</p>
+                    </div>
+                </div>
+                <div class="quiz-nav-buttons">
+                    <button type="button" class="btn secondary-btn prev-step-btn">&larr; Back</button>
+                    <button type="button" class="btn next-step-btn" disabled>Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Household Energy -->
+            <div class="quiz-step" data-step="4" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--primary); font-family: var(--font-heading); font-size: 1.25rem;">3. Describe your household electricity & cooling usage:</h3>
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" data-field="energy" data-value="low">
+                        <div class="option-icon">💡🌱</div>
+                        <h4>Low Usage</h4>
+                        <p>Energy-saving lights, rare AC use</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="energy" data-value="moderate">
+                        <div class="option-icon">💡</div>
+                        <h4>Moderate Usage</h4>
+                        <p>Standard energy consumption, occasional AC</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="energy" data-value="high">
+                        <div class="option-icon">⚡</div>
+                        <h4>High Usage</h4>
+                        <p>Higher consumption, daily AC cooling</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="energy" data-value="very_high">
+                        <div class="option-icon">⚡⚡</div>
+                        <h4>Very High Usage</h4>
+                        <p>Heavy electrical loads, always-on AC units</p>
+                    </div>
+                </div>
+                <div class="quiz-nav-buttons">
+                    <button type="button" class="btn secondary-btn prev-step-btn">&larr; Back</button>
+                    <button type="button" class="btn next-step-btn" disabled>Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Diet & Food Waste -->
+            <div class="quiz-step" data-step="5" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--primary); font-family: var(--font-heading); font-size: 1.25rem;">4. What are your typical eating and food waste habits?</h3>
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" data-field="diet" data-value="vegan">
+                        <div class="option-icon">🥦</div>
+                        <h4>Vegan</h4>
+                        <p>Plant-based, conscious food choices</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="diet" data-value="vegetarian">
+                        <div class="option-icon">🧀</div>
+                        <h4>Vegetarian</h4>
+                        <p>No meat, low environmental impact</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="diet" data-value="mixed">
+                        <div class="option-icon">🥩</div>
+                        <h4>Mixed Diet</h4>
+                        <p>Moderate meat & dairy consumption</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="diet" data-value="high_meat">
+                        <div class="option-icon">🍖</div>
+                        <h4>High Meat</h4>
+                        <p>Frequent meat meals, higher footprint</p>
+                    </div>
+                </div>
+                <div class="quiz-nav-buttons">
+                    <button type="button" class="btn secondary-btn prev-step-btn">&larr; Back</button>
+                    <button type="button" class="btn next-step-btn" disabled>Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Waste & Recycling -->
+            <div class="quiz-step" data-step="6" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--primary); font-family: var(--font-heading); font-size: 1.25rem;">5. How consistently do you recycle & reuse containers?</h3>
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" data-field="waste" data-value="always">
+                        <div class="option-icon">♻️</div>
+                        <h4>Always</h4>
+                        <p>Active recycling, zero single-use items</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="waste" data-value="sometimes">
+                        <div class="option-icon">🔄</div>
+                        <h4>Sometimes</h4>
+                        <p>Moderate efforts to recycle and reuse</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="waste" data-value="rarely">
+                        <div class="option-icon">🗑</div>
+                        <h4>Rarely</h4>
+                        <p>Low recycling, frequent plastic disposal</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="waste" data-value="never">
+                        <div class="option-icon">❌</div>
+                        <h4>Never</h4>
+                        <p>Zero recycling, heavy packaging waste</p>
+                    </div>
+                </div>
+                <div class="quiz-nav-buttons">
+                    <button type="button" class="btn secondary-btn prev-step-btn">&larr; Back</button>
+                    <button type="button" class="btn next-step-btn" disabled>Next &rarr;</button>
+                </div>
+            </div>
+
+            <!-- Step 7: Water & Shopping -->
+            <div class="quiz-step" data-step="7" style="display: none;">
+                <h3 style="margin-bottom: 20px; color: var(--primary); font-family: var(--font-heading); font-size: 1.25rem;">6. What are your water usage & clothing shopping habits?</h3>
+                <div class="quiz-options-grid">
+                    <div class="quiz-option-card" data-field="consumption" data-value="eco">
+                        <div class="option-icon">💧🌱</div>
+                        <h4>Eco-Conscious</h4>
+                        <p>Short showers (<5m), rare shopping trips</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="consumption" data-value="moderate">
+                        <div class="option-icon">🚿🛍</div>
+                        <h4>Moderate</h4>
+                        <p>Average showers (5-10m), monthly shopping</p>
+                    </div>
+                    <div class="quiz-option-card" data-field="consumption" data-value="heavy">
+                        <div class="option-icon">🛁🛒</div>
+                        <h4>High Impact</h4>
+                        <p>Long showers (>15m), weekly fashion purchases</p>
+                    </div>
+                </div>
+                <div class="quiz-nav-buttons" style="margin-top: 30px;">
+                    <button type="button" class="btn secondary-btn prev-step-btn">&larr; Back</button>
+                    <button type="submit" id="submitBtn" class="btn" style="background: var(--accent); padding: 12px 28px;" disabled>Calculate Score &rarr;</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden original select dropdowns for database and calculations compatibility -->
+        <div id="hiddenCalculatorInputs" style="display: none;">
+            <select id="transport" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="300">Personal Car</option>
+                <option value="200">Bike / Scooter</option>
+                <option value="100">Public Transport</option>
+                <option value="30">Walking / Cycling</option>
+            </select>
+            <select id="flights" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="0">None</option>
+                <option value="150">1 - 2 Flights</option>
+                <option value="350">3 - 5 Flights</option>
+                <option value="600">More than 5 Flights</option>
+            </select>
+            <select id="electricity" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="100">Low (Energy Efficient)</option>
+                <option value="250">Moderate</option>
+                <option value="400">High</option>
+                <option value="600">Very High</option>
+            </select>
+            <select id="diet" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="100">Vegan</option>
+                <option value="180">Vegetarian</option>
+                <option value="350">Mixed Diet</option>
+                <option value="500">High Meat Consumption</option>
+            </select>
+            <select id="recycle" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="0">Always</option>
+                <option value="40">Sometimes</option>
+                <option value="80">Rarely</option>
+                <option value="120">Never</option>
+            </select>
+            <select id="water" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="20">Less than 5 Minutes</option>
+                <option value="50">5 - 10 Minutes</option>
+                <option value="80">10 - 15 Minutes</option>
+                <option value="120">More than 15 Minutes</option>
+            </select>
+            <select id="plastic" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="20">Rarely (Eco Bags/Bottles)</option>
+                <option value="60">Sometimes</option>
+                <option value="100">Often</option>
+                <option value="150">Daily</option>
+            </select>
+            <select id="clothes" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="20">Few Times A Year</option>
+                <option value="60">Monthly</option>
+                <option value="100">Twice A Month</option>
+                <option value="150">Weekly</option>
+            </select>
+            <select id="reusable" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="0">Always</option>
+                <option value="30">Often</option>
+                <option value="70">Sometimes</option>
+                <option value="120">Never</option>
+            </select>
+            <select id="foodWaste" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="10">Never</option>
+                <option value="40">Occasionally</option>
+                <option value="80">Weekly</option>
+                <option value="120">Frequently</option>
+            </select>
+            <select id="acUsage" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="50">Rarely / None</option>
+                <option value="150">Occasionally</option>
+                <option value="250">Daily</option>
+                <option value="400">Most Of The Day</option>
+            </select>
+            <select id="energySaving" required>
+                <option value="" disabled selected>Select Option</option>
+                <option value="0">Always</option>
+                <option value="30">Often</option>
+                <option value="70">Sometimes</option>
+                <option value="120">Rarely / Never</option>
+            </select>
+            <button type="reset" id="resetBtn" class="reset-btn" style="display: none;">Reset Assessment</button>
         </div>
     </form>
 </section>
@@ -65,80 +339,97 @@
         <div class="individual-chart-card">
             <canvas id="carbonChart"></canvas>
         </div>
-        <div class="individual-result-card">
-            <h3>Total Emissions</h3>
-            <h1 id="emissionValue">0</h1>
-            <h3>Emission Level</h3>
-            <p id="emissionLevel">-</p>
-            <h3>Sustainability Score</h3>
-            <p id="score">-</p>
+        <div class="individual-result-card" style="display: flex; flex-direction: column; justify-content: center; gap: 15px;">
+            <div>
+                <h3>Total Emissions</h3>
+                <h1 id="emissionValue" style="margin-bottom: 5px;">0 kg CO₂</h1>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;">
+                <div>
+                    <h3 style="font-size: 0.85rem; margin-bottom: 2px;">Emission Level</h3>
+                    <p id="emissionLevel" style="font-weight: 700; color: var(--primary);">-</p>
+                </div>
+                <div>
+                    <h3 style="font-size: 0.85rem; margin-bottom: 2px;">Sustainability Score</h3>
+                    <p id="score" style="font-weight: 700; color: var(--accent);">-</p>
+                    <span id="ecoScore" style="display: none;">0</span>
+                </div>
+            </div>
+
+            <div id="individualOffsetCard" style="border-top: 1px solid rgba(11, 37, 22, 0.08); padding-top: 15px; margin-top: 5px; display: none; text-align: left;">
+                <h4 style="font-size: 1.1rem; color: var(--accent); font-weight: 700; margin-bottom: 5px;">🌲 Offset Requirement</h4>
+                <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.4;"><strong id="individualTreesNeeded" style="color: var(--primary); font-size: 1.2rem;">0</strong> mature trees needed to plant annually to absorb these emissions.</p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                <button type="button" id="individualPrintReportBtn" style="padding: 12px; font-size: 0.9rem; font-weight: bold; border-radius: var(--border-radius-sm); border: 1.5px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; transition: var(--transition);">
+                    🖨️ Print / Save PDF Report
+                </button>
+                <button type="button" id="uiResetBtn" class="btn secondary-btn" style="width: 100%; border-radius: 50px; font-weight: 600;">Reset Quiz</button>
+            </div>
         </div>
     </div>
 </section>
 
 <section class="individual-insight-section">
     <div class="individual-insight-card">
-        <h2>
-            AI Sustainability Insight
-        </h2>
-        <p id="individual-combinedInsight">
-            -
-        </p>
+        <h2>AI Sustainability Insight</h2>
+        <p id="individual-combinedInsight">-</p>
     </div>
 </section>
 
-<section class="eco-score-section">
-    <h2>
-        Your Sustainability Score
-    </h2>
-    <div class="score-circle">
-        <div class="inner-circle">
-            <span id="ecoScore">
-                0
-            </span>
-            <p>
-                Eco Score
-            </p>
-        </div>
-    </div>
-</section>
+
 
 <section class="breakdown-section">
-    <h2>
-        Emission Breakdown
-    </h2>
+    <h2>Emission Breakdown</h2>
     <div class="breakdown-container">
-        <div class="breakdown-card">
-            <h3>
-                Transport Impact
-            </h3>
-            <p id="transportImpact">
-                -
-            </p>
+        <div class="breakdown-card card-transport">
+            <h3>🚗 Transport Commuting</h3>
+            <p id="transportImpact">-</p>
         </div>
-        <div class="breakdown-card">
-            <h3>
-                Electricity Usage
-            </h3>
-            <p id="electricityImpact">
-                -
-            </p>
+        <div class="breakdown-card card-flight">
+            <h3>✈️ Air Travel (Flights)</h3>
+            <p id="flightImpact">-</p>
         </div>
-        <div class="breakdown-card">
-            <h3>
-                Flights Emissions
-            </h3>
-            <p id="flightImpact">
-                -
-            </p>
+        <div class="breakdown-card card-energy">
+            <h3>⚡ Home Energy</h3>
+            <p id="energyImpact">-</p>
         </div>
-        <div class="breakdown-card">
-            <h3>
-                Dietary Footprints
-            </h3>
-            <p id="dietImpact">
-                -
-            </p>
+        <div class="breakdown-card card-diet">
+            <h3>🥗 Diet & Food Waste</h3>
+            <p id="dietImpact">-</p>
+        </div>
+        <div class="breakdown-card card-waste">
+            <h3>♻️ Waste & Recycling</h3>
+            <p id="wasteImpact">-</p>
+        </div>
+        <div class="breakdown-card card-consumption">
+            <h3>💧 Consumption & Water</h3>
+            <p id="consumptionImpact">-</p>
+        </div>
+    </div>
+</section>
+
+<section class="individual-insight-section" id="historySection" style="background: var(--bg-light); border-top: 1px solid rgba(11, 37, 22, 0.05); margin-top: 50px;">
+    <div class="individual-insight-card" style="max-width: 1100px;">
+        <h2>Recent Assessments History <span id="dbStatusBadge" class="status-badge offline">Offline</span></h2>
+        <div style="overflow-x: auto; margin-top: 20px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgba(11,37,22,0.05);">
+                <thead>
+                    <tr style="background: var(--primary); color: var(--white); font-family: var(--font-heading); font-weight: 700;">
+                        <th style="padding: 15px 20px;">User Name</th>
+                        <th style="padding: 15px 20px;">Total Emissions</th>
+                        <th style="padding: 15px 20px;">Eco Score</th>
+                        <th style="padding: 15px 20px;">Date Analyzed</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                    <tr>
+                        <td colspan="4" style="padding: 20px; text-align: center; color: var(--text-muted);">Loading logs from database...</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>
@@ -148,25 +439,26 @@
         <div>
             <h2>Carbon Decode</h2>
             <p>
-                Building environmental awareness through intelligent carbon footprint analysis and sustainable living insights.
+                Building climate action through quantitative carbon footprinting, sustainability education, and community tools.
             </p>
         </div>
         <div>
             <h3>Quick Links</h3>
-            <a href="index.html">Home</a>
-            <a href="individual.html">Individual</a>
-            <a href="institution.html">Institution</a>
-            <a href="awareness.html">Awareness</a>
+            <a href="index.html" id="footerLinkHome">Home</a>
+            <a href="individual.html" id="footerLinkIndividual">Individual</a>
+            <a href="organization.html" id="footerLinkInstitution">Organization</a>
+            <a href="awareness.html" id="footerLinkAwareness">Awareness</a>
+            <a href="about.html" id="footerLinkAbout">About</a>
         </div>
         <div>
             <h3>Sustainability Vision</h3>
             <p>
-                Inspiring greener choices for a cleaner and more responsible future.
+                Inspiring low-impact choices, electric transit networks, and zero-waste initiatives for a cleaner, greener earth.
             </p>
         </div>
     </div>
     <div class="footer-bottom">
-        © 2026 Carbon Decode • Designed for Environmental Awareness
+        &copy; 2026 Carbon Decode • Designed for Environmental Awareness
     </div>
 </footer>
 
