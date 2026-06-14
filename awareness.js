@@ -52,7 +52,7 @@ function fetchPledgeCount() {
         })
         .catch(() => {
             // Local fallback
-            const localCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "142");
+            const localCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "0");
             updatePledgeCountDisplay(localCount);
         });
 }
@@ -94,7 +94,7 @@ if (pledgeBtn) {
         })
         .catch(() => {
             console.warn("Could not save pledge to server. Incrementing local count fallback.");
-            const localCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "142") + 1;
+            const localCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "0") + 1;
             localStorage.setItem("carbon_decode_local_pledges_count", String(localCount));
             updatePledgeCountDisplay(localCount);
         });

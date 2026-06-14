@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function loadAllDataFromLocalStorage() {
         individualData = JSON.parse(localStorage.getItem("individual_calculations") || "[]");
         institutionData = JSON.parse(localStorage.getItem("institution_calculations") || "[]");
-        const localPledgesCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "142");
+        const localPledgesCount = Number(localStorage.getItem("carbon_decode_local_pledges_count") || "0");
         calculateStats(localPledgesCount);
         renderCurrentTab();
     }
