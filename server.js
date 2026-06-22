@@ -5,7 +5,7 @@ const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_PATH = path.join(__dirname, "carbon_decode.db");
+const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, "carbon_decode.db");
 
 // JSON body parsing
 app.use(express.json());
@@ -258,6 +258,10 @@ app.get("/api/pledges/count", (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Carbon Decode Backend Server started on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+    app.listen(PORT, () => {
+        console.log(`🚀 Carbon Decode Backend Server started on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;
