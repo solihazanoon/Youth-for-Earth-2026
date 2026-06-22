@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? ""
+    : "http://youthforearth-001-site1.itempurl.com";
+
 // Form elements
 const institutionForm = document.getElementById("institutionForm");
 
@@ -284,7 +288,7 @@ institutionForm.addEventListener("submit", function (e) {
             saveToLocal("institution", record);
             fetchHistory();
         } else {
-            fetch("/api/calculations/institution", {
+            fetch(`${API_BASE_URL}/api/calculations/institution`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -369,7 +373,7 @@ function fetchHistory() {
         return;
     }
 
-    fetch("/api/calculations/institution")
+    fetch(`${API_BASE_URL}/api/calculations/institution`)
         .then(res => {
             if (!res.ok) throw new Error("Fetch failed");
             return res.json();

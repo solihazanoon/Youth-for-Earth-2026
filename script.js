@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? ""
+    : "http://youthforearth-001-site1.itempurl.com";
+
 const carbonForm = document.getElementById("carbonForm");
 const canvasEl = document.getElementById("carbonChart");
 const ctx = canvasEl ? canvasEl.getContext("2d") : null;
@@ -430,7 +434,7 @@ carbonForm.addEventListener("submit", function (e) {
             saveToLocal("individual", record);
             fetchHistory();
         } else {
-            fetch("/api/calculations/individual", {
+            fetch(`${API_BASE_URL}/api/calculations/individual`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -573,7 +577,7 @@ function fetchHistory() {
         return;
     }
 
-    fetch("/api/calculations/individual")
+    fetch(`${API_BASE_URL}/api/calculations/individual`)
         .then(res => {
             if (!res.ok) throw new Error("Fetch failed");
             return res.json();

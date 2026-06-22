@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? ""
+    : "http://youthforearth-001-site1.itempurl.com";
+
 // Counter animation
 
 const counters = document.querySelectorAll(".counter");
@@ -48,7 +52,7 @@ function fetchPledgeCount() {
         return;
     }
 
-    fetch("/api/pledges/count")
+    fetch(`${API_BASE_URL}/api/pledges/count`)
         .then(res => {
             if (!res.ok) throw new Error();
             return res.json();
@@ -93,7 +97,7 @@ if (pledgeBtn) {
             return;
         }
 
-        fetch("/api/pledges", {
+        fetch(`${API_BASE_URL}/api/pledges`, {
             method: "POST",
             headers: { "Content-Type": "application/json" }
         })

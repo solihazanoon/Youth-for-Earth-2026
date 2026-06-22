@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? ""
+    : "http://youthforearth-001-site1.itempurl.com";
+
 document.addEventListener("DOMContentLoaded", function () {
     let currentTab = "individual"; // "individual" or "institution"
     let individualData = [];
@@ -42,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch("/api/admin/calculations/individual")
+        fetch(`${API_BASE_URL}/api/admin/calculations/individual`)
             .then(res => {
                 if (!res.ok) throw new Error("Server response not ok");
                 return res.json();
@@ -65,11 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // Load records from database
     function loadAllDataFromDb() {
         // Fetch Individual Records
-        const fetchInd = fetch("/api/admin/calculations/individual").then(r => r.json());
+        const fetchInd = fetch(`${API_BASE_URL}/api/admin/calculations/individual`).then(r => r.json());
         // Fetch Institutional Records
-        const fetchInst = fetch("/api/admin/calculations/institution").then(r => r.json());
+        const fetchInst = fetch(`${API_BASE_URL}/api/admin/calculations/institution`).then(r => r.json());
         // Fetch Pledge Count
-        const fetchPledges = fetch("/api/pledges/count").then(r => r.json()).catch(() => ({ count: 0 }));
+        const fetchPledges = fetch(`${API_BASE_URL}/api/pledges/count`).then(r => r.json()).catch(() => ({ count: 0 }));
 
         Promise.all([fetchInd, fetchInst, fetchPledges])
             .then(([indRecords, instRecords, pledgeData]) => {
@@ -263,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Record removed from local storage.");
         } else {
             // Delete from Database Server
-            fetch(`/api/admin/calculations/${type}/${id}`, { method: "DELETE" })
+            fetch(`${API_BASE_URL}/api/admin/calculations/${type}/${id}`, { method: "DELETE" })
                 .then(res => {
                     if (!res.ok) throw new Error("Delete failed");
                     return res.json();
