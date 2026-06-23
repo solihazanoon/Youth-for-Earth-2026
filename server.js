@@ -1,7 +1,31 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
 const fs = require("fs");
 const path = require("path");
+
+// Load environment variables from .env file if it exists (useful for local dev and persistent server config)
+const envPath = path.join(__dirname, ".env");
+if (fs.existsSync(envPath)) {
+    const envConfig = fs.readFileSync(envPath, "utf-8");
+    envConfig.split(/\r?\n/).forEach((line) => {
+        // Simple key=value regex matcher
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+        if (match) {
+            const key = match[1];
+            let value = match[2] || "";
+            // Clean up surrounding quotes
+            if (value.length > 0 && value.charAt(0) === '"' && value.charAt(value.length - 1) === '"') {
+                value = value.substring(1, value.length - 1);
+            } else if (value.length > 0 && value.charAt(0) === "'" && value.charAt(value.length - 1) === "'") {
+                value = value.substring(1, value.length - 1);
+            }
+            value = value.trim();
+            // Assign to process.env if not already set
+            if (!process.env[key]) {
+                process.env[key] = value;
+            }
+        }
+    });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,22 +45,211 @@ app.use((req, res, next) => {
     next();
 });
 
-// Initialize database
-const db = new sqlite3.Database(DB_PATH, (err) => {
-    if (err) {
-        console.error("❌ Database connection error:", err.message);
-    } else {
-        console.log("📂 Connected to SQLite database:", DB_PATH);
-        initializeDatabaseSchema();
-    }
-});
+// Database Client Wrapper (Abstracting SQLite and MSSQL)
+let db;
 
-// Initialize tables from schema.sql
+if (process.env.DB_TYPE === "mssql" || process.env.MSSQL_SERVER) {
+    console.log("🔌 Using Microsoft SQL Server (MSSQL)");
+    const sql = require("mssql");
+
+    const config = {
+        user: process.env.MSSQL_USER,
+        password: process.env.MSSQL_PASSWORD,
+        server: process.env.MSSQL_SERVER,
+        database: process.env.MSSQL_DATABASE,
+        options: {
+            encrypt: true,
+            trustServerCertificate: true
+        }
+    };
+
+    const poolPromise = new sql.ConnectionPool(config)
+        .connect()
+        .then((pool) => {
+            console.log("📂 Connected to MSSQL Database:", process.env.MSSQL_DATABASE);
+            initializeMssqlDatabaseSchema(pool);
+            return pool;
+        })
+        .catch((err) => {
+            console.error("❌ MSSQL Connection Error:", err.message);
+            process.exit(1);
+        });
+
+    db = {
+        run: async (query, params, callback) => {
+            try {
+                let mssqlQuery = query;
+                if (query.trim().toUpperCase().startsWith("INSERT INTO ")) {
+                    mssqlQuery += "; SELECT SCOPE_IDENTITY() AS id";
+                }
+                
+                let paramIndex = 0;
+                mssqlQuery = mssqlQuery.replace(/\?/g, () => `@p${paramIndex++}`);
+
+                const pool = await poolPromise;
+                const request = pool.request();
+                if (params) {
+                    params.forEach((val, idx) => {
+                        request.input(`p${idx}`, val);
+                    });
+                }
+                const result = await request.query(mssqlQuery);
+                if (callback) {
+                    const context = {
+                        lastID: result.recordset && result.recordset[0] ? result.recordset[0].id : null,
+                        changes: result.rowsAffected ? result.rowsAffected[0] : 0
+                    };
+                    callback.call(context, null);
+                }
+            } catch (err) {
+                console.error("❌ MSSQL Error running query:", err.message);
+                if (callback) callback(err);
+            }
+        },
+        all: async (query, params, callback) => {
+            try {
+                let mssqlQuery = query;
+                if (query.toUpperCase().includes("LIMIT ")) {
+                    const limitMatch = query.match(/LIMIT\s+(\d+)/i);
+                    if (limitMatch) {
+                        const limit = limitMatch[1];
+                        mssqlQuery = query.replace(/LIMIT\s+\d+/i, "");
+                        mssqlQuery = mssqlQuery.replace(/SELECT\s+/i, `SELECT TOP ${limit} `);
+                    }
+                }
+
+                let paramIndex = 0;
+                mssqlQuery = mssqlQuery.replace(/\?/g, () => `@p${paramIndex++}`);
+
+                const pool = await poolPromise;
+                const request = pool.request();
+                if (params) {
+                    params.forEach((val, idx) => {
+                        request.input(`p${idx}`, val);
+                    });
+                }
+                const result = await request.query(mssqlQuery);
+                if (callback) callback(null, result.recordset);
+            } catch (err) {
+                console.error("❌ MSSQL Error running query:", err.message);
+                if (callback) callback(err);
+            }
+        },
+        get: async (query, params, callback) => {
+            try {
+                let mssqlQuery = query;
+                if (query.toUpperCase().includes("LIMIT ")) {
+                    const limitMatch = query.match(/LIMIT\s+(\d+)/i);
+                    if (limitMatch) {
+                        const limit = limitMatch[1];
+                        mssqlQuery = query.replace(/LIMIT\s+\d+/i, "");
+                        mssqlQuery = mssqlQuery.replace(/SELECT\s+/i, `SELECT TOP ${limit} `);
+                    }
+                }
+
+                let paramIndex = 0;
+                mssqlQuery = mssqlQuery.replace(/\?/g, () => `@p${paramIndex++}`);
+
+                const pool = await poolPromise;
+                const request = pool.request();
+                if (params) {
+                    params.forEach((val, idx) => {
+                        request.input(`p${idx}`, val);
+                    });
+                }
+                const result = await request.query(mssqlQuery);
+                if (callback) callback(null, result.recordset ? result.recordset[0] : null);
+            } catch (err) {
+                console.error("❌ MSSQL Error running query:", err.message);
+                if (callback) callback(err);
+            }
+        },
+        serialize: (fn) => fn()
+    };
+} else {
+    console.log("🔌 Using SQLite database");
+    const sqlite3 = require("sqlite3").verbose();
+    const localDb = new sqlite3.Database(DB_PATH, (err) => {
+        if (err) {
+            console.error("❌ Database connection error:", err.message);
+        } else {
+            console.log("📂 Connected to SQLite database:", DB_PATH);
+            initializeDatabaseSchema();
+        }
+    });
+    db = localDb;
+}
+
+// Initialize tables in MSSQL
+function initializeMssqlDatabaseSchema(pool) {
+    const checkAndCreateTables = async () => {
+        try {
+            const request = pool.request();
+            
+            // Check and create individual_calculations
+            await request.query(`
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='individual_calculations' AND xtype='U')
+                CREATE TABLE individual_calculations (
+                    id INT IDENTITY(1,1) PRIMARY KEY,
+                    user_name NVARCHAR(255) NOT NULL,
+                    transport INT,
+                    flights INT,
+                    electricity INT,
+                    diet INT,
+                    recycle INT,
+                    water INT,
+                    plastic INT,
+                    clothes INT,
+                    reusable INT,
+                    food_waste INT,
+                    ac_usage INT,
+                    energy_saving INT,
+                    total_emissions FLOAT NOT NULL,
+                    eco_score INT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            `);
+            
+            // Check and create institution_calculations
+            await request.query(`
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='institution_calculations' AND xtype='U')
+                CREATE TABLE institution_calculations (
+                    id INT IDENTITY(1,1) PRIMARY KEY,
+                    institution_name NVARCHAR(255) NOT NULL,
+                    email NVARCHAR(255),
+                    employees INT,
+                    students INT,
+                    electricity_usage FLOAT,
+                    transport_fleet FLOAT,
+                    waste_generated FLOAT,
+                    total_emissions FLOAT NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            `);
+            
+            // Check and create pledges
+            await request.query(`
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='pledges' AND xtype='U')
+                CREATE TABLE pledges (
+                    id INT IDENTITY(1,1) PRIMARY KEY,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            `);
+            
+            console.log("✅ MSSQL Database schema verified/created successfully.");
+        } catch (err) {
+            console.error("❌ Error initializing MSSQL tables:", err.message);
+        }
+    };
+    
+    checkAndCreateTables();
+}
+
+// Initialize tables from schema.sql (for SQLite)
 function initializeDatabaseSchema() {
     const schemaPath = path.join(__dirname, "schema.sql");
     if (fs.existsSync(schemaPath)) {
         const schemaSql = fs.readFileSync(schemaPath, "utf8");
-        // Split schema by semicolons to execute statements individually
         const statements = schemaSql
             .split(";")
             .map((stmt) => stmt.trim())
@@ -51,7 +264,6 @@ function initializeDatabaseSchema() {
                 });
             });
             
-            // Add email column if not exists
             db.run("ALTER TABLE institution_calculations ADD COLUMN email TEXT", (err) => {
                 if (err) {
                     if (err.message.includes("duplicate column name") || err.message.includes("already exists")) {

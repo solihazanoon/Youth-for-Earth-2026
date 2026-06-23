@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "mssql": "^12.6.0",
     "sqlite3": "^5.1.7"
   },
   "author": "Carbon Decode Team",
