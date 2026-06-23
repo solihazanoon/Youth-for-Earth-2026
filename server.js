@@ -29,7 +29,7 @@ if (fs.existsSync(envPath)) {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, "carbon_decode.db");
+const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, "App_Data", "carbon_decode.db");
 
 // JSON body parsing
 app.use(express.json());
