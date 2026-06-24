@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://youthforearth-001-site1.itempurl.com/api/:path*"
+      "destination": "http://11317334:60-dayfreetrial@youthforearth-001-site1.itempurl.com/api/:path*"
     }
   ],
   "builds": [
