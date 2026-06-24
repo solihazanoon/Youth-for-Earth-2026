@@ -1,6 +1,6 @@
 const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? ""
-    : "http://youthforearth-001-site1.itempurl.com";
+    : "/api";
 
 const carbonForm = document.getElementById("carbonForm");
 const canvasEl = document.getElementById("carbonChart");
