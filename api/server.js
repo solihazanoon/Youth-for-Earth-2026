@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Load environment variables from .env file if it exists (useful for local dev and persistent server config)
-const envPath = path.join(__dirname, ".env");
+const envPath = path.join(__dirname, "..", ".env");
 if (fs.existsSync(envPath)) {
     const envConfig = fs.readFileSync(envPath, "utf-8");
     envConfig.split(/\r?\n/).forEach((line) => {
@@ -29,7 +29,7 @@ if (fs.existsSync(envPath)) {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, "App_Data", "carbon_decode.db");
+const DB_PATH = process.env.DATABASE_PATH || path.join(__dirname, "..", "App_Data", "carbon_decode.db");
 
 // JSON body parsing
 app.use(express.json());
@@ -247,7 +247,7 @@ function initializeMssqlDatabaseSchema(pool) {
 
 // Initialize tables from schema.sql (for SQLite)
 function initializeDatabaseSchema() {
-    const schemaPath = path.join(__dirname, "schema.sql");
+    const schemaPath = path.join(__dirname, "..", "schema.sql");
     if (fs.existsSync(schemaPath)) {
         const schemaSql = fs.readFileSync(schemaPath, "utf8");
         const statements = schemaSql
