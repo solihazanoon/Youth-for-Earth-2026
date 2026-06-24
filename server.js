@@ -283,8 +283,10 @@ function initializeDatabaseSchema() {
     }
 }
 
-// Static files
-app.use(express.static(__dirname));
+// Root endpoint for API check
+app.get("/", (req, res) => {
+    res.json({ status: "online", message: "Carbon Decode API Backend Server is running." });
+});
 
 // API routes
 
