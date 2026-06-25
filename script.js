@@ -19,20 +19,25 @@ function createChart(transport, flights, energy, diet, waste, consumption) {
         chart.destroy();
     }
 
+    const isMobile = window.innerWidth <= 576;
+    const labels = isMobile ? 
+        ["Transit", "Flights", "Energy", "Diet", "Waste", "Water"] : 
+        [
+            ["Transport", "Commuting"],
+            ["Air Travel", "(Flights)"],
+            ["Home", "Energy"],
+            ["Diet &", "Food Waste"],
+            ["Waste &", "Recycling"],
+            ["Consumption", "& Water"]
+        ];
+
     chart = new Chart(ctx, {
 
         type: "bar",
 
         data: {
 
-            labels: [
-                ["Transport", "Commuting"],
-                ["Air Travel", "(Flights)"],
-                ["Home", "Energy"],
-                ["Diet &", "Food Waste"],
-                ["Waste &", "Recycling"],
-                ["Consumption", "& Water"]
-            ],
+            labels: labels,
 
             datasets: [{
                 data: [
@@ -91,13 +96,13 @@ function createChart(transport, flights, energy, diet, waste, consumption) {
                     },
                     ticks: {
                         autoSkip: false,
-                        maxRotation: 0,
+                        maxRotation: 30,
                         minRotation: 0,
                         padding: 6,
                         font: {
                             family: "'Plus Jakarta Sans', sans-serif",
                             weight: 600,
-                            size: 11
+                            size: isMobile ? 9 : 11
                         },
                         color: "#52635a"
                     }

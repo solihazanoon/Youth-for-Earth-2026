@@ -111,11 +111,15 @@ function generateAIMessage(total, employees, students, electricity, transportFle
 window.onload = function () {
 
     const ctx = document.getElementById("institutionChart").getContext("2d");
+    const isMobile = window.innerWidth <= 576;
+    const initialLabels = isMobile ? 
+        ["Staff", "Students", "Energy", "Fleet", "Waste"] : 
+        ["Employees", "Students", "Electricity", ["Transport", "Fleet"], "Waste"];
 
     institutionChart = new Chart(ctx, {
         type: "bar",
         data: {
-            labels: ["Employees", "Students", "Electricity", ["Transport", "Fleet"], "Waste"],
+            labels: initialLabels,
             datasets: [{
                 label: "Carbon Impact",
                 data: [0, 0, 0, 0, 0],
@@ -161,13 +165,13 @@ window.onload = function () {
                     grid: { display: false },
                     ticks: {
                         autoSkip: false,
-                        maxRotation: 0,
+                        maxRotation: 30,
                         minRotation: 0,
                         padding: 6,
                         font: {
                             family: "'Plus Jakarta Sans', sans-serif",
                             weight: 600,
-                            size: 11
+                            size: isMobile ? 9 : 11
                         },
                         color: "#52635a"
                     }
@@ -424,8 +428,12 @@ function escapeHTML(str) {
 function updateChartConfig(isCompany) {
     if (!institutionChart) return;
     
+    const isMobile = window.innerWidth <= 576;
+    
     if (isCompany) {
-        institutionChart.data.labels = ["Employees", "Electricity", ["Transport", "Fleet"], "Waste"];
+        institutionChart.data.labels = isMobile ?
+            ["Staff", "Energy", "Fleet", "Waste"] :
+            ["Employees", "Electricity", ["Transport", "Fleet"], "Waste"];
         institutionChart.data.datasets[0].backgroundColor = [
             "#163e26",
             "#52b788",
@@ -439,7 +447,9 @@ function updateChartConfig(isCompany) {
             "#b7e4c7"
         ];
     } else {
-        institutionChart.data.labels = ["Employees", "Students", "Electricity", ["Transport", "Fleet"], "Waste"];
+        institutionChart.data.labels = isMobile ?
+            ["Staff", "Students", "Energy", "Fleet", "Waste"] :
+            ["Employees", "Students", "Electricity", ["Transport", "Fleet"], "Waste"];
         institutionChart.data.datasets[0].backgroundColor = [
             "#163e26",
             "#2e7d5c",
@@ -455,6 +465,9 @@ function updateChartConfig(isCompany) {
             "#b7e4c7"
         ];
     }
+    
+    institutionChart.options.scales.x.ticks.font.size = isMobile ? 9 : 11;
+    institutionChart.options.scales.x.ticks.maxRotation = 30;
 }
 
 // Dynamic Label, Visibility & Placeholder Toggles for Company audits
