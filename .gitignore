@@ -7,3 +7,6 @@ carbon_decode.db
 # User specific configuration
 .gemini/
 .env
+
+# Firebase key
+*firebase-adminsdk*.json
