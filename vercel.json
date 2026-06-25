@@ -5,8 +5,8 @@
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "*.css", "use": "@vercel/static" },
     { "src": "*.js", "use": "@vercel/static" },
-    { "src": "*.jpg", "use": "@vercel/static" },
-    { "src": "*.png", "use": "@vercel/static" }
+    { "src": "images/*.jpg", "use": "@vercel/static" },
+    { "src": "images/*.png", "use": "@vercel/static" }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/server.js" }
