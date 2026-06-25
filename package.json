@@ -2,9 +2,9 @@
   "name": "carbon-decode",
   "version": "1.0.0",
   "description": "Environmental Carbon Footprint Analyzer & SQL Database",
-  "main": "server.js",
+  "main": "backend/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node backend/server.js"
   },
   "dependencies": {
     "express": "^4.19.2",
