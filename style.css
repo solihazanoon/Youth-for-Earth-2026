@@ -519,6 +519,7 @@ form select:focus {
     align-items: center;
     justify-content: center;
     height: 480px;
+    position: relative;
 }
 
 .individual-result-card, .institution-result-card {
@@ -995,15 +996,19 @@ canvas {
 @media (max-width: 992px) {
     .individual-result-box, .institution-result-box {
         flex-direction: column;
+        gap: 24px;
     }
     
     .individual-chart-card, .institution-chart-card {
-        width: 100%;
-        height: 420px;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 380px;
+        padding: 24px;
     }
     
     .individual-result-card, .institution-result-card {
-        width: 100%;
+        width: 100% !important;
+        min-width: 0 !important;
     }
 }
 
@@ -1192,6 +1197,11 @@ canvas {
         min-width: 100% !important;
         width: 100% !important;
         padding: 30px 20px;
+    }
+    
+    .individual-chart-card, .institution-chart-card {
+        height: 300px;
+        padding: 15px 10px;
     }
     
     .kashmir-image-card, .world-image-card {
