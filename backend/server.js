@@ -39,7 +39,7 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT) {
         console.error("❌ Failed to parse FIREBASE_SERVICE_ACCOUNT env var:", e.message);
     }
 } else {
-    serviceAccount = require("../carbon-decode-firebase-adminsdk-fbsvc-585c18a6f3.json");
+    serviceAccount = require("./carbon-decode-firebase-adminsdk-fbsvc-585c18a6f3.json");
 }
 
 initializeApp({
