@@ -30,7 +30,17 @@ const PORT = process.env.PORT || 3000;
 // Initialize Firebase Admin SDK
 const { initializeApp, cert } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
-const serviceAccount = require("../carbon-decode-firebase-adminsdk-fbsvc-585c18a6f3.json");
+
+let serviceAccount;
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+    try {
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+    } catch (e) {
+        console.error("❌ Failed to parse FIREBASE_SERVICE_ACCOUNT env var:", e.message);
+    }
+} else {
+    serviceAccount = require("../carbon-decode-firebase-adminsdk-fbsvc-585c18a6f3.json");
+}
 
 initializeApp({
     credential: cert(serviceAccount)
