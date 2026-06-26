@@ -39,8 +39,20 @@ Carbon Decode is a comprehensive, interactive web platform designed to estimate,
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: HTML5, Vanilla CSS3, JavaScript (ES6+), Chart.js
-- **Backend**: Node.js, Express.js
-- **Database**: Google Cloud Firestore (NoSQL Document Store)
+### Frontend
+- **HTML5 & CSS3**: Semantic page structures and custom, responsive styles featuring glassmorphism, responsive navigation menus, grid layouts, and print stylesheets.
+- **JavaScript (ES6+)**: Powers client-side quiz wizards, real-time carbon clocks, ecological countdowns, and geocoding/atmospheric API integrations.
+- **Chart.js**: Client-side charting engine for rendering responsive emission breakdown visualizations.
+- **Google Fonts**: Modern, premium typography using *Outfit* and *Plus Jakarta Sans*.
+
+### Backend
+- **Node.js & Express.js**: Server-side REST API built to handle data aggregation, secure admin actions, and user pledges.
+- **Firebase Admin SDK**: Secure serverless communication and CRUD database queries.
+
+### Database
+- **Google Cloud Firestore**: Real-time NoSQL document database used to store calculations, organization audits, and user pledges.
+
+### Hosting & Infrastructure
+- **Vercel**: Monorepo hosting serving static frontend assets and running the backend as serverless Node.js functions.
 
 
