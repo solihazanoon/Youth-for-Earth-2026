@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Carbon Decode</title>
     <meta name="description" content="Secure administrative login for Carbon Decode database and systems management.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="favicon.png?v=5">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             sessionStorage.setItem("adminLoggedIn", "true");
             window.location.href = "admin.html";
         } else {
-            loginError.textContent = "❌ Invalid username or password.";
+            loginError.innerHTML = "<i class='fa-solid fa-circle-xmark' style='margin-right: 6px;'></i>Invalid username or password.";
             loginError.style.color = "#c62828";
         }
     });
