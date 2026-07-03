@@ -148,6 +148,8 @@ function answerQuiz(correct){
 document.addEventListener("DOMContentLoaded", function () {
     const aqiSearchBtn = document.getElementById("aqiSearchBtn");
     const aqiCityInput = document.getElementById("aqiCityInput");
+    const dropdown = document.getElementById("aqiAutocompleteDropdown");
+    let debounceTimer;
     
     if (aqiSearchBtn && aqiCityInput) {
         aqiSearchBtn.addEventListener("click", performAQISearch);
@@ -162,30 +164,104 @@ document.addEventListener("DOMContentLoaded", function () {
         aqiChips.forEach(chip => {
             chip.addEventListener("click", function () {
                 aqiCityInput.value = this.getAttribute("data-city");
+                if (dropdown) dropdown.style.display = "none";
                 performAQISearch();
             });
         });
+
+        // Setup input listener for dynamic autocomplete suggestions
+        aqiCityInput.addEventListener("input", function () {
+            clearTimeout(debounceTimer);
+            const query = aqiCityInput.value.trim();
+            if (query.length < 2) {
+                if (dropdown) dropdown.style.display = "none";
+                return;
+            }
+
+            debounceTimer = setTimeout(async function () {
+                try {
+                    const searchUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&format=json`;
+                    const res = await fetch(searchUrl);
+                    const data = await res.json();
+
+                    if (dropdown && data.results && data.results.length > 0) {
+                        dropdown.innerHTML = "";
+                        data.results.forEach(loc => {
+                            const formattedName = `${loc.name}, ${loc.admin1 ? loc.admin1 + ", " : ""}${loc.country}`;
+                            const item = document.createElement("div");
+                            item.className = "aqi-autocomplete-item";
+                            item.textContent = formattedName;
+                            item.addEventListener("click", function () {
+                                aqiCityInput.value = formattedName;
+                                dropdown.style.display = "none";
+                                fetchAQIData(loc.latitude, loc.longitude, formattedName);
+                            });
+                            dropdown.appendChild(item);
+                        });
+                        dropdown.style.display = "block";
+                    } else {
+                        if (dropdown) dropdown.style.display = "none";
+                    }
+                } catch (err) {
+                    console.warn("Geocoding auto-complete error:", err);
+                }
+            }, 250);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", function (e) {
+            if (dropdown && e.target !== aqiCityInput && e.target !== dropdown) {
+                dropdown.style.display = "none";
+            }
+        });
     }
 
-    async function performAQISearch() {
-        const cityName = aqiCityInput.value.trim();
+    async function fetchAQIData(lat, lon, formattedName) {
         const aqiLoading = document.getElementById("aqiLoading");
         const aqiResultsCard = document.getElementById("aqiResultsCard");
         const aqiError = document.getElementById("aqiError");
 
-        if (!cityName) {
-            showAQIError("Please enter a city name.");
-            return;
-        }
-
-        // Reset display states
         aqiError.style.display = "none";
         aqiResultsCard.style.display = "none";
         aqiLoading.style.display = "block";
 
         try {
-            // Geocode city name to coordinates
-            const geocodeUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cityName)}&count=1&format=json`;
+            const aqiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm2_5,carbon_monoxide,nitrogen_dioxide&timezone=auto`;
+            const aqiRes = await fetch(aqiUrl);
+            const aqiData = await aqiRes.json();
+
+            if (!aqiData.current) {
+                throw new Error("No current air quality data returned from the weather grid.");
+            }
+
+            displayAQIResults(formattedName, aqiData.current);
+        } catch (error) {
+            showAQIError(error.message || "An error occurred while fetching atmospheric data.");
+        } finally {
+            aqiLoading.style.display = "none";
+        }
+    }
+
+    async function performAQISearch() {
+        const cityName = aqiCityInput.value.trim();
+        if (!cityName) {
+            showAQIError("Please enter a city name.");
+            return;
+        }
+
+        const aqiLoading = document.getElementById("aqiLoading");
+        const aqiResultsCard = document.getElementById("aqiResultsCard");
+        const aqiError = document.getElementById("aqiError");
+
+        // Clean query: split and use the first token (city name) if commas exist
+        const searchName = cityName.includes(",") ? cityName.split(",")[0].trim() : cityName;
+
+        aqiError.style.display = "none";
+        aqiResultsCard.style.display = "none";
+        aqiLoading.style.display = "block";
+
+        try {
+            const geocodeUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(searchName)}&count=1&format=json`;
             const geocodeRes = await fetch(geocodeUrl);
             const geocodeData = await geocodeRes.json();
 
@@ -198,20 +274,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const lon = location.longitude;
             const formattedName = `${location.name}, ${location.admin1 ? location.admin1 + ", " : ""}${location.country}`;
 
-            // Fetch air quality data from Open-Meteo
-            const aqiUrl = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm2_5,carbon_monoxide,nitrogen_dioxide&timezone=auto`;
-            const aqiRes = await fetch(aqiUrl);
-            const aqiData = await aqiRes.json();
-
-            if (!aqiData.current) {
-                throw new Error("No current air quality data returned from the weather grid.");
-            }
-
-            // Render results to UI
-            displayAQIResults(formattedName, aqiData.current);
+            await fetchAQIData(lat, lon, formattedName);
         } catch (error) {
             showAQIError(error.message || "An error occurred while fetching atmospheric data.");
-        } finally {
             aqiLoading.style.display = "none";
         }
     }
