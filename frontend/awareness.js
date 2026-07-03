@@ -209,11 +209,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             debounceTimer = setTimeout(async function () {
                 try {
-                    const searchUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&format=json`;
+                    const searchUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=3&format=json`;
                     const res = await fetch(searchUrl);
                     const data = await res.json();
 
-                    const results = data.results || [];
+                    const results = (data.results || []).slice(0, 3);
                     geocodeCache[cacheKey] = results;
                     renderSuggestions(results);
                 } catch (err) {
