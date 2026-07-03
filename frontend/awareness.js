@@ -169,6 +169,29 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
+        const geocodeCache = {};
+
+        function renderSuggestions(results) {
+            if (dropdown && results && results.length > 0) {
+                dropdown.innerHTML = "";
+                results.forEach(loc => {
+                    const formattedName = `${loc.name}, ${loc.admin1 ? loc.admin1 + ", " : ""}${loc.country}`;
+                    const item = document.createElement("div");
+                    item.className = "aqi-autocomplete-item";
+                    item.textContent = formattedName;
+                    item.addEventListener("click", function () {
+                        aqiCityInput.value = formattedName;
+                        dropdown.style.display = "none";
+                        fetchAQIData(loc.latitude, loc.longitude, formattedName);
+                    });
+                    dropdown.appendChild(item);
+                });
+                dropdown.style.display = "block";
+            } else {
+                if (dropdown) dropdown.style.display = "none";
+            }
+        }
+
         // Setup input listener for dynamic autocomplete suggestions
         aqiCityInput.addEventListener("input", function () {
             clearTimeout(debounceTimer);
@@ -178,30 +201,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            const cacheKey = query.toLowerCase();
+            if (geocodeCache[cacheKey]) {
+                renderSuggestions(geocodeCache[cacheKey]);
+                return;
+            }
+
             debounceTimer = setTimeout(async function () {
                 try {
                     const searchUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=5&format=json`;
                     const res = await fetch(searchUrl);
                     const data = await res.json();
 
-                    if (dropdown && data.results && data.results.length > 0) {
-                        dropdown.innerHTML = "";
-                        data.results.forEach(loc => {
-                            const formattedName = `${loc.name}, ${loc.admin1 ? loc.admin1 + ", " : ""}${loc.country}`;
-                            const item = document.createElement("div");
-                            item.className = "aqi-autocomplete-item";
-                            item.textContent = formattedName;
-                            item.addEventListener("click", function () {
-                                aqiCityInput.value = formattedName;
-                                dropdown.style.display = "none";
-                                fetchAQIData(loc.latitude, loc.longitude, formattedName);
-                            });
-                            dropdown.appendChild(item);
-                        });
-                        dropdown.style.display = "block";
-                    } else {
-                        if (dropdown) dropdown.style.display = "none";
-                    }
+                    const results = data.results || [];
+                    geocodeCache[cacheKey] = results;
+                    renderSuggestions(results);
                 } catch (err) {
                     console.warn("Geocoding auto-complete error:", err);
                 }

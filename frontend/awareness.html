@@ -115,10 +115,12 @@
         <p style="font-weight: 500; font-size: 16px; margin-bottom: 25px; color: var(--text-muted);">
             Search any city globally to fetch live Air Quality Index (AQI) data and particulate levels in real-time.
         </p>
-        <div class="aqi-search-container" style="position: relative; width: 100%;">
-            <input type="text" id="aqiCityInput" placeholder="Enter city name (e.g. Paris, Tokyo, Mumbai)" style="margin-top: 0;" autocomplete="off">
+        <div class="aqi-search-container">
+            <div style="position: relative; flex: 1;">
+                <input type="text" id="aqiCityInput" placeholder="Enter city name (e.g. Paris, Tokyo, Mumbai)" style="margin-top: 0; width: 100%;" autocomplete="off">
+                <div id="aqiAutocompleteDropdown" class="aqi-autocomplete-dropdown" style="display: none;"></div>
+            </div>
             <button id="aqiSearchBtn" style="border-radius: 12px; margin: 0;">Search City</button>
-            <div id="aqiAutocompleteDropdown" class="aqi-autocomplete-dropdown" style="display: none;"></div>
         </div>
         
         <div class="aqi-suggestions">
