@@ -1949,23 +1949,8 @@ canvas {
 }
 
 /* Breakdown Card Colors */
-.breakdown-card.card-transport {
-    border-top: 5px solid #163e26;
-}
-.breakdown-card.card-flight {
-    border-top: 5px solid #2a523a;
-}
-.breakdown-card.card-energy {
-    border-top: 5px solid #2e7d5c;
-}
-.breakdown-card.card-diet {
-    border-top: 5px solid #52b788;
-}
-.breakdown-card.card-waste {
-    border-top: 5px solid #74c69d;
-}
-.breakdown-card.card-consumption {
-    border-top: 5px solid #95d5b2;
+.breakdown-card {
+    border-top: 5px solid var(--accent);
 }
 
 .breakdown-card h3 {
