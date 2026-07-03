@@ -300,11 +300,11 @@ button, .btn {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 100px 0;
+    padding: 60px 0;
 }
 
 section {
-    padding: 100px 5%;
+    padding: 60px 5%;
     background: var(--bg-light);
 }
 
@@ -488,7 +488,7 @@ form select:focus {
 
 /* Results Interface */
 .individual-result-section, .institution-result-section {
-    padding: 100px 5%;
+    padding: 60px 5%;
     background: var(--white);
     text-align: center;
 }
@@ -596,7 +596,7 @@ form select:focus {
 
 /* Eco Score Conic Chart */
 .eco-score-section {
-    padding: 100px 5%;
+    padding: 60px 5%;
     text-align: center;
     background: var(--bg-light);
 }
@@ -647,8 +647,8 @@ form select:focus {
 
 /* Insight Cards */
 .individual-insight-section, .insight-section {
-    padding: 80px 5%;
-    background: var(--white);
+    padding: 50px 5%;
+    background: var(--bg-light);
 }
 
 .individual-insight-card, .insight-card {
@@ -692,7 +692,7 @@ form select:focus {
 
 /* Timeline Styling */
 .timeline-section {
-    padding: 100px 5%;
+    padding: 60px 5%;
 }
 
 .timeline {
@@ -782,7 +782,7 @@ form select:focus {
 
 /* Map Section */
 .map-section {
-    padding: 100px 5%;
+    padding: 60px 5%;
     text-align: center;
 }
 
@@ -809,7 +809,7 @@ form select:focus {
 
 /* Quiz & Pledge */
 .quiz-section, .pledge-section {
-    padding: 100px 5%;
+    padding: 60px 5%;
 }
 
 .quiz-box {
@@ -897,7 +897,7 @@ form select:focus {
 /* Call to Action */
 .cta, .awareness-cta {
     position: relative;
-    padding: 120px 5%;
+    padding: 80px 5%;
     background-color: var(--primary);
     background-size: cover;
     background-position: center;
@@ -939,7 +939,7 @@ form select:focus {
 .footer {
     background: var(--primary);
     color: var(--white);
-    padding-top: 80px;
+    padding-top: 50px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -1143,12 +1143,12 @@ canvas {
     }
     
     section {
-        padding: 70px 5%;
+        padding: 45px 5%;
     }
     
     .hero, .individual-hero, .institution-hero, .awareness-hero, .about-hero, .cta, .awareness-cta {
-        padding-top: 80px;
-        padding-bottom: 80px;
+        padding-top: 60px;
+        padding-bottom: 60px;
     }
 }
 
@@ -1174,12 +1174,12 @@ canvas {
 /* Mobile Layout Overrides */
 @media (max-width: 480px) {
     section {
-        padding: 50px 16px;
+        padding: 35px 16px;
     }
     
     .hero, .individual-hero, .institution-hero, .awareness-hero, .about-hero, .cta, .awareness-cta {
-        padding-top: 60px;
-        padding-bottom: 60px;
+        padding-top: 40px;
+        padding-bottom: 40px;
     }
     
     form, #carbonForm, #institutionForm {
@@ -1405,7 +1405,7 @@ canvas {
 
 /* Split CTA Section */
 .cta-split-section {
-    padding: 80px 5%;
+    padding: 50px 5%;
     background: var(--bg-light);
 }
 
@@ -1487,7 +1487,7 @@ canvas {
 
 /* Kashmir & Global Eco Sections */
 .kashmir-section, .world-section {
-    padding: 80px 5%;
+    padding: 50px 5%;
 }
 
 .kashmir-section {
@@ -1670,7 +1670,7 @@ canvas {
 /* About & Team Page */
 
 .team-section {
-    padding: 80px 8%;
+    padding: 50px 8%;
 }
 
 .team-container {
