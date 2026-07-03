@@ -2182,3 +2182,34 @@ canvas {
         page-break-inside: avoid;
     }
 }
+
+/* AQI Suggestion Chips */
+.aqi-suggestions {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+button.aqi-chip {
+    background: rgba(46, 125, 92, 0.08) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(46, 125, 92, 0.15) !important;
+    padding: 6px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 20px !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+button.aqi-chip:hover {
+    background: var(--accent) !important;
+    color: var(--white) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(46, 125, 92, 0.15) !important;
+}

@@ -116,8 +116,41 @@
             Search any city globally to fetch live Air Quality Index (AQI) data and particulate levels in real-time.
         </p>
         <div class="aqi-search-container">
-            <input type="text" id="aqiCityInput" placeholder="Enter city name (e.g. Paris, Tokyo, Mumbai)" style="margin-top: 0;">
+            <input type="text" id="aqiCityInput" list="aqiCities" placeholder="Enter city name (e.g. Paris, Tokyo, Mumbai)" style="margin-top: 0;">
+            <datalist id="aqiCities">
+                <option value="Srinagar"></option>
+                <option value="Jammu"></option>
+                <option value="Gulmarg"></option>
+                <option value="Pahalgam"></option>
+                <option value="Anantnag"></option>
+                <option value="Baramulla"></option>
+                <option value="Leh"></option>
+                <option value="Kargil"></option>
+                <option value="New Delhi"></option>
+                <option value="Mumbai"></option>
+                <option value="Bangalore"></option>
+                <option value="Kolkata"></option>
+                <option value="Chennai"></option>
+                <option value="London"></option>
+                <option value="New York"></option>
+                <option value="Tokyo"></option>
+                <option value="Paris"></option>
+                <option value="Dubai"></option>
+                <option value="Singapore"></option>
+                <option value="Sydney"></option>
+            </datalist>
             <button id="aqiSearchBtn" style="border-radius: 12px; margin: 0;">Search City</button>
+        </div>
+        
+        <div class="aqi-suggestions">
+            <span style="font-size: 13px; font-weight: 600; color: var(--text-muted);">Popular:</span>
+            <button type="button" class="aqi-chip" data-city="Srinagar">Srinagar</button>
+            <button type="button" class="aqi-chip" data-city="Jammu">Jammu</button>
+            <button type="button" class="aqi-chip" data-city="New Delhi">New Delhi</button>
+            <button type="button" class="aqi-chip" data-city="Mumbai">Mumbai</button>
+            <button type="button" class="aqi-chip" data-city="London">London</button>
+            <button type="button" class="aqi-chip" data-city="New York">New York</button>
+            <button type="button" class="aqi-chip" data-city="Tokyo">Tokyo</button>
         </div>
         
         <div id="aqiLoading" style="display: none; padding: 20px; text-align: center;">

@@ -156,6 +156,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 performAQISearch();
             }
         });
+        
+        // Setup click listeners for AQI suggestion chips
+        const aqiChips = document.querySelectorAll(".aqi-chip");
+        aqiChips.forEach(chip => {
+            chip.addEventListener("click", function () {
+                aqiCityInput.value = this.getAttribute("data-city");
+                performAQISearch();
+            });
+        });
     }
 
     async function performAQISearch() {
